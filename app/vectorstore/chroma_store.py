@@ -24,3 +24,24 @@ class ChromaStore:
             embeddings=embeddings,
             metadatas=metadatas,
         )
+
+
+    def search(
+        self,
+        query_embedding: list[float],
+        top_k: int = 5,
+    ):
+        return self.collection.query(
+            query_embeddings=[query_embedding],
+            n_results=top_k,
+        )
+
+
+    def reset_collection(self):
+        self.client.delete_collection(
+            name=self.collection.name
+        )
+
+        self.collection = self.client.get_or_create_collection(
+            name=self.collection.name
+        )
